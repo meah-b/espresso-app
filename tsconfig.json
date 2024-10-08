@@ -1,9 +1,4 @@
 {
-  "compilerOptions": {
-    "jsx":"react-jsx",
-    "strict": true,
-    "paths": {
-      "react": [ "./node_modules/@types/react" ]
-    }
-  }
+  "compilerOptions": {},
+  "extends": "expo/tsconfig.base"
 }
