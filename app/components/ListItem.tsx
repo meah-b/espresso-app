@@ -15,11 +15,12 @@ interface Props{
   cremaQuality: number;
   selected: boolean;
   onSelect: () => void;
-  onUnselect: () => void;
+  onUnselect: () => void
+  onEdit: () => void;
 }
 
 export default function ListItem (props: Props) {
-  const {date, rating, espressoBean, extractionDuration, grindSize, tampWeight, acidity, cremaQuality, selected, onSelect, onUnselect} = props;
+  const {date, rating, espressoBean, extractionDuration, grindSize, tampWeight, acidity, cremaQuality, selected, onSelect, onUnselect, onEdit} = props;
   const brownStars = Array.from({ length: 5 }, (_, index) => index < rating ? <FullBrownStar key={index} /> : <EmptyBrownStar key={index} />);
   const creamStars = Array.from({ length: 5 }, (_, index) => index < rating ? <FullCreamStar key={index} /> : <EmptyCreamStar key={index} />);
 
@@ -45,8 +46,8 @@ export default function ListItem (props: Props) {
         <Text style={[styles.text, selected ? styles.selectedText : null]}>Crema Quality: {cremaQuality}</Text>
         <View style={styles.row}>
         <TouchableOpacity onPress={onUnselect}><Chevron/></TouchableOpacity>
-        <TouchableOpacity style={styles.edit} onPress={() => {}}>
-          <Text style={[styles.text, styles.selectedText, {textDecorationLine: 'underline'}]}>Edit</Text>
+        <TouchableOpacity style={styles.edit} onPress={onEdit}>
+          <Text style={styles.editText}>Edit</Text>
         </TouchableOpacity>
         </View>
       </View>
@@ -73,8 +74,13 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 15
   },
-  selected: {
-    backgroundColor: colors.creamBeige, 
+  editText: {
+    textDecorationLine: 'underline',
+    color: colors.darkEspresso, 
+    fontSize: 20,
+    fontFamily: 'Cochin-Bold',
+    textAlign: 'left',
+    paddingLeft: 15
   },
   infoContainer: {
     backgroundColor: colors.creamBeige, 
@@ -94,6 +100,12 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginBottom: 5,
   },
+  selected: {
+    backgroundColor: colors.creamBeige, 
+  },
+  selectedText: {
+    color: colors.darkEspresso, 
+  },
   stars: {
     flexDirection: 'row',
     width: 150,
@@ -107,8 +119,5 @@ const styles = StyleSheet.create({
     fontFamily: 'Cochin-Bold',
     textAlign: 'left',
     paddingLeft: 15
-  },
-  selectedText: {
-    color: colors.darkEspresso, 
   }
 });

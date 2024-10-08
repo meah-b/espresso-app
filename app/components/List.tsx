@@ -68,7 +68,8 @@ export default function SkillList(props: SkillFormProps) {
                     cremaQuality={espresso.cremaQuality}
                     selected={espresso.id == selectedEspresso}
                     onSelect={() => setSelectedEspresso(espresso.id)}
-                    onUnselect={() => setSelectedEspresso(undefined)}>
+                    onUnselect={() => setSelectedEspresso(undefined)}
+                    onEdit={() => {}}>
                 </ListItem>
                 ))}
             </ScrollView>
