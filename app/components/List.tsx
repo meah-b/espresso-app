@@ -33,7 +33,18 @@ export default function SkillList(props: SkillFormProps) {
             tampWeight: 2,
             acidity: 4, 
             cremaQuality: 3,
-        }
+        },
+        {
+            id: 3,
+            date: 'September 18, 2024',
+            rating: 4,
+            espressoBean: "Balzac's Espresso Blend", 
+            extractionDuration: 20,
+            grindSize: 19, 
+            tampWeight: 2,
+            acidity: 4, 
+            cremaQuality: 3,
+        },
     ];    
 
     function sortEspressos(espressos: any, sortBy: string, order: string) {
@@ -50,8 +61,6 @@ export default function SkillList(props: SkillFormProps) {
         return sortedEspressos;
     }
     
-
-
     return (
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -78,18 +87,17 @@ export default function SkillList(props: SkillFormProps) {
 }
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flex:1,
         flexDirection: 'column',
-        marginTop: 160,
-        height: 600,
-        width: '100%'
+        width: '100%',
+        height: 420,
+        marginBottom: 140
     },
     scrollContainer: {
         flex: 1,
-        flexGrow: 1,
         flexDirection: 'column',
         alignContent: 'center',
         alignItems: 'center',
-        width: '100%'
+        width: '100%',
     },
 })

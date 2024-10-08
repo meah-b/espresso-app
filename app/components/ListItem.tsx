@@ -1,8 +1,9 @@
 import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
 
 import {colors} from '../config/theme';
-import { Chevron } from './Chevron';
-import { FullCreamStar, EmptyCreamStar, FullBrownStar, EmptyBrownStar } from './Star';
+import { Chevron } from './svgs/Chevron';
+import { SliderSvg1, SliderSvg2, SliderSvg3, SliderSvg4, SliderSvg5 } from './svgs/SliderSvg';
+import { FullCreamStar, EmptyCreamStar, FullBrownStar, EmptyBrownStar } from './svgs/Star';
 
 interface Props{
   date: string;
@@ -19,36 +20,81 @@ interface Props{
   onEdit: () => void;
 }
 
+function getSliderSvg(value: number) {
+  switch (value) {
+    case 1:
+      return <SliderSvg1 />;
+    case 2:
+      return <SliderSvg2 />;
+    case 3:
+      return <SliderSvg3 />;
+    case 4:
+      return <SliderSvg4 />;
+    case 5:
+      return <SliderSvg5 />;
+    default:
+      return <SliderSvg1 />;
+  }
+}
+
 export default function ListItem (props: Props) {
   const {date, rating, espressoBean, extractionDuration, grindSize, tampWeight, acidity, cremaQuality, selected, onSelect, onUnselect, onEdit} = props;
   const brownStars = Array.from({ length: 5 }, (_, index) => index < rating ? <FullBrownStar key={index} /> : <EmptyBrownStar key={index} />);
   const creamStars = Array.from({ length: 5 }, (_, index) => index < rating ? <FullCreamStar key={index} /> : <EmptyCreamStar key={index} />);
 
   const UnselectedListItem = () => (
-    <TouchableOpacity style={[styles.container, selected ? styles.selected : null]} onPress={onSelect}>
-      <Text style={[styles.text, selected ? styles.selectedText : null]}>{date}</Text>
+    <TouchableOpacity style={styles.container} onPress={onSelect}>
+      <Text style={styles.boldText}>{date}</Text>
       <View style={styles.stars}>{creamStars}</View>
     </TouchableOpacity>
   );
 
   const SelectedListItem = () => (
     <View style={styles.largeContainer}>
-      <View style={[styles.container, selected ? styles.selected : null]}>
-        <Text style={[styles.text, selected ? styles.selectedText : null]}>{date}</Text>
+      <TouchableOpacity style={[styles.container, styles.selected]} onPress={onUnselect}>
+        <Text style={[styles.boldText, styles.selectedText]}>{date}</Text>
         <View style={styles.stars}>{brownStars}</View>
-      </View>
+      </TouchableOpacity>
       <View style={styles.infoContainer}>
-        <Text style={[styles.text, selected ? styles.selectedText : null]}>Espresso Bean: {espressoBean}</Text>
-        <Text style={[styles.text, selected ? styles.selectedText : null]}>Extraction Duration: {extractionDuration} seconds</Text>
-        <Text style={[styles.text, selected ? styles.selectedText : null]}>Grind Size: {grindSize}</Text>
-        <Text style={[styles.text, selected ? styles.selectedText : null]}>Tamp Weight: {tampWeight}</Text>
-        <Text style={[styles.text, selected ? styles.selectedText : null]}>Acidity: {acidity}</Text>
-        <Text style={[styles.text, selected ? styles.selectedText : null]}>Crema Quality: {cremaQuality}</Text>
+        <View style={[styles.row, {justifyContent: 'flex-start'}]}>
+          <Text style={[styles.boldText, styles.selectedText]}>Espresso Bean: </Text>
+          <Text style={styles.text}>{espressoBean}</Text>
+        </View>
+        <View style={[styles.row, {justifyContent: 'flex-start'}]}>
+          <Text style={[styles.boldText, styles.selectedText]}>Extraction Duration: </Text>
+          <Text style={styles.text}>{extractionDuration} seconds</Text>
+        </View>
+        <View style={[styles.row, {justifyContent: 'flex-start'}]}>
+          <Text style={[styles.boldText, styles.selectedText]}>Grind Size: </Text>
+          <Text style={styles.text}>{grindSize}</Text>
+        </View>
         <View style={styles.row}>
+          <View style={[styles.column, {alignItems: 'flex-start'}]}>
+            <Text style={[styles.boldText, styles.selectedText]}>Tamp Weight:</Text>
+            <Text style={[styles.boldText, styles.selectedText]}>Acidity:</Text>
+            <Text style={[styles.boldText, styles.selectedText]}>Crema Quality:</Text>
+          </View>
+          <View style={[styles.column, {gap: 3}]}>
+            <Text style={styles.text}>Light</Text>
+            <Text style={styles.text}>Basic</Text>
+            <Text style={styles.text}>Poor</Text>
+          </View>
+          <View style={[styles.column, {gap: 4}]}>
+            {getSliderSvg(tampWeight)}
+            {getSliderSvg(acidity)}
+            {getSliderSvg(cremaQuality)}
+          </View>
+          <View style={[styles.column, {gap: 3}]}>
+            <Text style={styles.text}>Heavy</Text>
+            <Text style={styles.text}>Acidic</Text>
+            <Text style={styles.text}> Great</Text>
+          </View>
+        </View>
+        <View style={styles.bottomRow}>
         <TouchableOpacity onPress={onUnselect}><Chevron/></TouchableOpacity>
-        <TouchableOpacity style={styles.edit} onPress={onEdit}>
-          <Text style={styles.editText}>Edit</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.edit} onPress={onEdit}>
+            <Text style={styles.editText}>Edit</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -60,6 +106,14 @@ export default function ListItem (props: Props) {
 }
 
 const styles = StyleSheet.create({
+  boldText: {
+    fontSize: 20,
+    color: colors.creamBeige,
+    fontFamily: 'Cochin-Bold',
+    textAlign: 'left',
+    paddingLeft: 12,
+    paddingBottom: 2
+  },
   container: {
     flexDirection: 'row',
     backgroundColor: colors.darkEspresso, 
@@ -70,17 +124,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.black
   },
+  column: {
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   edit: {   
     position: 'absolute',
-    right: 15
+    right: 12
   },
   editText: {
     textDecorationLine: 'underline',
     color: colors.darkEspresso, 
     fontSize: 20,
     fontFamily: 'Cochin-Bold',
-    textAlign: 'left',
-    paddingLeft: 15
   },
   infoContainer: {
     backgroundColor: colors.creamBeige, 
@@ -93,11 +149,11 @@ const styles = StyleSheet.create({
   largeContainer: {
     width: '100%',
   },
-  row: {
+  bottomRow: {
     flexDirection: 'row',
     alignContent: 'center',
     justifyContent: 'center',
-    marginTop: 30,
+    marginTop: 20,
     marginBottom: 5,
   },
   selected: {
@@ -106,18 +162,23 @@ const styles = StyleSheet.create({
   selectedText: {
     color: colors.darkEspresso, 
   },
+  row: {
+    flexDirection: 'row',
+    alignContent: 'center',
+    justifyContent: 'space-between',
+    marginRight: 12
+  },
   stars: {
     flexDirection: 'row',
     width: 150,
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginRight: 15
+    marginRight: 12,
+    gap: 4
   },
   text: {
-    fontSize: 20,
-    color: colors.creamBeige,
-    fontFamily: 'Cochin-Bold',
-    textAlign: 'left',
-    paddingLeft: 15
+    fontSize: 19,
+    color: colors.darkEspresso,
+    fontFamily: 'Cochin',
   }
 });
