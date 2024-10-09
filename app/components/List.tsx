@@ -3,68 +3,57 @@ import { ScrollView, View, StyleSheet } from 'react-native';
 import ListItem from './ListItem';
 import { useState } from 'react';
 
-interface SkillFormProps {
-    order: string;
-    sortBy: string;
+interface FilterCriterion {
+    key: string;
+    value: number[] | string[];
+    type: 'range' | 'match';
 }
 
-export default function SkillList(props: SkillFormProps) {
-    const { order, sortBy } = props;
-    const [selectedEspresso, setSelectedEspresso] = useState()
-    const espressos = [
-        {
-            id: 1,
-            date: 'September 20, 2024',
-            rating: 5,
-            espressoBean: "Balzac's Espresso Blend", 
-            extractionDuration: 20,
-            grindSize: 18, 
-            tampWeight: 3,
-            acidity: 3, 
-            cremaQuality: 3,
-        },
-        {
-            id: 2,
-            date: 'September 19, 2024',
-            rating: 4,
-            espressoBean: "Balzac's Espresso Blend", 
-            extractionDuration: 20,
-            grindSize: 19, 
-            tampWeight: 2,
-            acidity: 4, 
-            cremaQuality: 3,
-        },
-        {
-            id: 3,
-            date: 'September 18, 2024',
-            rating: 4,
-            espressoBean: "Balzac's Espresso Blend", 
-            extractionDuration: 20,
-            grindSize: 19, 
-            tampWeight: 2,
-            acidity: 4, 
-            cremaQuality: 3,
-        },
-    ];    
+interface Props {
+    filterBy: FilterCriterion[];
+    espressos: Espresso[]
+}
 
-    function sortEspressos(espressos: any, sortBy: string, order: string) {
-        const sortedEspressos = [...espressos];
+interface Espresso {
+    id: number;
+    date: string;
+    rating: number;
+    espressoBean: string;
+    extractionDuration: number;
+    grindSize: number;
+    tampWeight: number;
+    acidity: number;
+    cremaQuality: number;
+    shot: string;
+}
+
+
+export default function List(props: Props) {
+    const {filterBy, espressos} = props;
+    const [selectedEspresso, setSelectedEspresso] = useState<number | null>(null)
+
+    function filterEspressos(espressos: Espresso[], filterBy: FilterCriterion[]) {
+        return espressos.filter(espresso => {
+            return filterBy.every(filter => {
+                const espressoValue = espresso[filter.key]; 
     
-        sortedEspressos.sort((a, b) => {
-            if (order === 'asc') {
-                return a[sortBy] - b[sortBy];
-            } else {
-                return b[sortBy] - a[sortBy];
-            }
+                switch (filter.type) {
+                    case 'range':
+                        const [minValue, maxValue] = filter.value as number[];
+                        return espressoValue >= minValue && espressoValue <= maxValue;
+                    case 'match':
+                        return (filter.value as string[]).includes(espressoValue as string);
+                    default:
+                        return true;
+                }
+            });
         });
-    
-        return sortedEspressos;
     }
     
     return (
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollContainer}>
-                {sortEspressos(espressos, sortBy, order).map((espresso) => (
+                {filterEspressos(espressos, filterBy).map((espresso) => (
                     <ListItem 
                     key={espresso.id}
                     date={espresso.date}
@@ -77,7 +66,7 @@ export default function SkillList(props: SkillFormProps) {
                     cremaQuality={espresso.cremaQuality}
                     selected={espresso.id == selectedEspresso}
                     onSelect={() => setSelectedEspresso(espresso.id)}
-                    onUnselect={() => setSelectedEspresso(undefined)}
+                    onUnselect={() => setSelectedEspresso(null)}
                     onEdit={() => {}}>
                 </ListItem>
                 ))}
