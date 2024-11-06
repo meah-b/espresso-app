@@ -1,4 +1,5 @@
-import { TouchableOpacity, StyleSheet, Text } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
+import { CreamDoubleShot, CreamSingleShot, BrownDoubleShot, BrownSingleShot } from './svgs/Cups';
 
 import {colors} from '../config/theme';
 
@@ -7,10 +8,26 @@ interface Props{
   variant: string;
   title: string;
   style: any;
+  icon?: string;
+}
+
+function getIcon(value: string) {
+  switch (value) {
+    case 'creamSingleShot':
+      return <CreamSingleShot />;
+    case 'creamDoubleShot':
+      return <CreamDoubleShot />;
+    case 'brownSingleShot':
+      return <BrownSingleShot />;
+    case 'brownDoubleShot':
+      return <BrownDoubleShot />;
+    default:
+      return <CreamSingleShot />;
+  }
 }
 
 export default function Button (props: Props) {
-  const {onPress, variant, title, style} = props;
+  const {onPress, variant, title, style, icon} = props;
   return (
     <TouchableOpacity 
       style={[
@@ -20,6 +37,21 @@ export default function Button (props: Props) {
         variant === 'creamBeige' ? { ...styles.standardContainer, backgroundColor: colors.creamBeige, ...style} : null,
       ]} 
       onPress={onPress}>
+      {icon ? 
+      <View style={styles.row}>
+        {getIcon(icon)}
+        <Text 
+          style={[
+            styles.text,
+            variant === 'start' ? { ...styles.text, color: colors.creamBeige} : null,
+            variant === 'lightEspresso' ? { ...styles.text, color: colors.creamBeige} : null,
+            variant === 'darkEspresso' ? { ...styles.text, color: colors.creamBeige} : null,
+            variant === 'creamBeige' ? { ...styles.text, color: colors.darkEspresso} : null,
+          ]}> 
+          {title} 
+        </Text>
+      </View>
+      : 
       <Text 
         style={[
           styles.text,
@@ -29,7 +61,7 @@ export default function Button (props: Props) {
           variant === 'creamBeige' ? { ...styles.text, color: colors.darkEspresso} : null,
         ]}> 
         {title} 
-      </Text>
+      </Text>}
     </TouchableOpacity>
   );
 }
@@ -37,7 +69,7 @@ export default function Button (props: Props) {
   const styles = StyleSheet.create({
     startContainer: {
       backgroundColor: colors.lightEspresso,
-      height: 50,
+      height: 55,
       paddingHorizontal: 90,
       borderRadius: 50,
       marginVertical: 8,
@@ -49,7 +81,7 @@ export default function Button (props: Props) {
       elevation: 5,
     },
     standardContainer: {
-      height: 43,
+      height: 55,
       borderRadius: 50,
       marginVertical: 5,
       justifyContent: 'center',
@@ -59,8 +91,13 @@ export default function Button (props: Props) {
       shadowRadius: 5,
       elevation: 5,
     },
+    row: {
+      flexDirection: 'row',
+      justifyContent: 'center',
+      gap: 8
+    },
     text: {
-      fontSize: 22,
+      fontSize: 20,
       fontFamily: 'Cochin-Bold',
       textAlign: 'center',
     },
