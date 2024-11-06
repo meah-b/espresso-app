@@ -2,8 +2,8 @@ import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
 import Slider from '@react-native-community/slider';
 
 import {colors} from '../config/theme';
-import { Chevron } from './Chevron';
-import { FullCreamStar, EmptyCreamStar, FullBrownStar, EmptyBrownStar } from './Star';
+import { Chevron } from './svgs/Chevron';
+import { FullCreamStar, EmptyCreamStar, FullBrownStar, EmptyBrownStar } from './svgs/Star';
 
 interface Props{
   date: string;
