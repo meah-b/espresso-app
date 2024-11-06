@@ -9,7 +9,7 @@ export default function LandingScreen() {
     return (
         <View style={styles.container}>
             <Image 
-              source={require('../assets/background.png')} 
+              source={require('../assets/images/background.png')} 
               style={styles.backgroundImage}
             />
             <Text style={styles.text}>EspressoLab</Text>

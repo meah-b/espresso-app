@@ -1,4 +1,5 @@
 import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
+import Slider from '@react-native-community/slider';
 
 import {colors} from '../config/theme';
 import { Chevron } from './Chevron';
@@ -38,12 +39,48 @@ export default function ListItem (props: Props) {
         <View style={styles.stars}>{brownStars}</View>
       </View>
       <View style={styles.infoContainer}>
-        <Text style={[styles.text, selected ? styles.selectedText : null]}>Espresso Bean: {espressoBean}</Text>
-        <Text style={[styles.text, selected ? styles.selectedText : null]}>Extraction Duration: {extractionDuration} seconds</Text>
-        <Text style={[styles.text, selected ? styles.selectedText : null]}>Grind Size: {grindSize}</Text>
-        <Text style={[styles.text, selected ? styles.selectedText : null]}>Tamp Weight: {tampWeight}</Text>
-        <Text style={[styles.text, selected ? styles.selectedText : null]}>Acidity: {acidity}</Text>
-        <Text style={[styles.text, selected ? styles.selectedText : null]}>Crema Quality: {cremaQuality}</Text>
+        <Text style={[styles.text, selected ? styles.selectedText : null, {marginBottom: 12, marginTop: 5}]}>Espresso Bean: {espressoBean}</Text>
+        <Text style={[styles.text, selected ? styles.selectedText : null, {marginBottom: 12}]}>Extraction Duration: {extractionDuration} seconds</Text>
+        <Text style={[styles.text, selected ? styles.selectedText : null, {marginBottom: 5}]}>Grind Size: {grindSize}</Text>
+        <View style={styles.sliderRow}>
+          <Text style={[styles.text, selected ? styles.selectedText : null]}>Tamp Weight: </Text>
+          <Slider
+            style={{width: 200, height: 40}}
+            minimumValue={0}
+            maximumValue={5}
+            value={tampWeight}
+            disabled={true}
+            thumbTintColor={colors.darkEspresso}
+            minimumTrackTintColor={colors.darkEspresso}
+            maximumTrackTintColor={colors.darkEspresso}
+          />
+        </View>
+        <View style={styles.sliderRow}>
+          <Text style={[styles.text, selected ? styles.selectedText : null]}>Acidity: </Text>
+          <Slider
+            style={{width: 200, height: 40}}
+            minimumValue={0}
+            maximumValue={5}
+            value={acidity}
+            disabled={true}
+            thumbTintColor={colors.darkEspresso}
+            minimumTrackTintColor={colors.darkEspresso}
+            maximumTrackTintColor={colors.darkEspresso}
+          />
+        </View>
+        <View style={styles.sliderRow}>
+          <Text style={[styles.text, selected ? styles.selectedText : null]}>Crema Quality: </Text>
+          <Slider
+            style={{width: 200, height: 40}}
+            minimumValue={0}
+            maximumValue={5}
+            value={cremaQuality}
+            disabled={true}
+            thumbTintColor={colors.darkEspresso}
+            minimumTrackTintColor={colors.darkEspresso}
+            maximumTrackTintColor={colors.darkEspresso}
+          />
+        </View>
         <View style={styles.row}>
         <TouchableOpacity onPress={onUnselect}><Chevron/></TouchableOpacity>
         <TouchableOpacity style={styles.edit} onPress={onEdit}>
@@ -84,7 +121,7 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     backgroundColor: colors.creamBeige, 
-    height: 220,
+    height: 280,
     width: '100%',
     justifyContent: 'center',
     borderWidth: 1,
@@ -97,14 +134,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignContent: 'center',
     justifyContent: 'center',
-    marginTop: 30,
-    marginBottom: 5,
+    marginTop: 15,
+    marginBottom: 10,
   },
   selected: {
     backgroundColor: colors.creamBeige, 
   },
   selectedText: {
     color: colors.darkEspresso, 
+  },
+  sliderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginRight: 15
   },
   stars: {
     flexDirection: 'row',
