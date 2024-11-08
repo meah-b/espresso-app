@@ -1,12 +1,14 @@
 import { ScrollView, View, StyleSheet } from 'react-native';
+import dayjs from 'dayjs';
 
 import ListItem from './ListItem';
+import { filterEspressos } from './utilities/filterEspressos';
 import { useState } from 'react';
 
-interface FilterCriterion {
+export interface FilterCriterion {
     key: string;
-    value: number[] | string[];
-    type: 'range' | 'match';
+    value: number[] | string[] | Date[];
+    type: 'range' | 'match' | 'dates';
 }
 
 interface Props {
@@ -14,9 +16,9 @@ interface Props {
     espressos: Espresso[]
 }
 
-interface Espresso {
+export interface Espresso {
     id: number;
-    date: string;
+    date: Date;
     rating: number;
     espressoBean: string;
     extractionDuration: number;
@@ -31,24 +33,6 @@ interface Espresso {
 export default function List(props: Props) {
     const {filterBy, espressos} = props;
     const [selectedEspresso, setSelectedEspresso] = useState<number | null>(null)
-
-    function filterEspressos(espressos: Espresso[], filterBy: FilterCriterion[]) {
-        return espressos.filter(espresso => {
-            return filterBy.every(filter => {
-                const espressoValue = espresso[filter.key]; 
-    
-                switch (filter.type) {
-                    case 'range':
-                        const [minValue, maxValue] = filter.value as number[];
-                        return espressoValue >= minValue && espressoValue <= maxValue;
-                    case 'match':
-                        return (filter.value as string[]).includes(espressoValue as string);
-                    default:
-                        return true;
-                }
-            });
-        });
-    }
     
     return (
         <View style={styles.container}>
@@ -56,7 +40,7 @@ export default function List(props: Props) {
                 {filterEspressos(espressos, filterBy).map((espresso) => (
                     <ListItem 
                     key={espresso.id}
-                    date={espresso.date}
+                    date={dayjs(espresso.date).format('MMMM D, YYYY')}
                     rating={espresso.rating} 
                     espressoBean={espresso.espressoBean}
                     extractionDuration={espresso.extractionDuration}

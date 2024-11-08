@@ -24,6 +24,7 @@
     "react-native-sectioned-multi-select": "^0.10.0",
     "react-native-slider": "^0.11.0",
     "react-native-svg": "^15.7.1",
+    "react-native-ui-datepicker": "^2.0.4",
     "react-native-vector-icons": "^10.2.0",
     "rn-range-slider": "^2.2.2"
   },

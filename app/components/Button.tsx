@@ -1,7 +1,7 @@
 import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
-import { CreamDoubleShot, CreamSingleShot, BrownDoubleShot, BrownSingleShot } from './svgs/Cups';
+import { CreamDoubleShot, CreamSingleShot, BrownDoubleShot, BrownSingleShot } from './svgs/Shots';
 
-import {colors} from '../config/theme';
+import { colors } from '../config/theme';
 
 interface Props{
   onPress: () => void;
