@@ -39,9 +39,9 @@ export default function ListItem (props: Props) {
         <View style={styles.stars}>{brownStars}</View>
       </View>
       <View style={styles.infoContainer}>
-        <Text style={[styles.text, selected ? styles.selectedText : null, {marginBottom: 12, marginTop: 5}]}>Espresso Bean: {espressoBean}</Text>
-        <Text style={[styles.text, selected ? styles.selectedText : null, {marginBottom: 12}]}>Extraction Duration: {extractionDuration} seconds</Text>
-        <Text style={[styles.text, selected ? styles.selectedText : null, {marginBottom: 5}]}>Grind Size: {grindSize}</Text>
+        <Text style={[styles.selectedText, {marginBottom: 12, marginTop: 5}]}>Espresso Bean: {espressoBean}</Text>
+        <Text style={[styles.selectedText, {marginBottom: 12}]}>Extraction Duration: {extractionDuration} seconds</Text>
+        <Text style={[styles.selectedText, {marginBottom: 5}]}>Grind Size: {grindSize}</Text>
         <View style={styles.sliderRow}>
           <Text style={[styles.text, selected ? styles.selectedText : null]}>Tamp Weight: </Text>
           <Slider

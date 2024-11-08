@@ -1,21 +1,31 @@
-import { Text, View, StyleSheet, TouchableOpacity, Modal } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, Modal, TextInput } from "react-native";
 import { colors } from "../config/theme";
 import Button from "../components/Button";
 import List from "../components/List";
 import { useState } from "react";
 import { Filter } from "../components/svgs/Filter";
 import MultiSelector from "../components/MultiSelector";
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
+import { DateRange } from 'react-date-range';
+import 'react-date-range/dist/styles.css'; 
+import 'react-date-range/dist/theme/default.css'; 
 
 export default function HomeScreen() {
     const [modalVisible, setModalVisible] = useState(false);
-    const [dateFilter, setDateFilter] = useState('');
+    const [dateFilter, setDateFilter] = useState([
+        {
+          startDate: new Date(),
+          endDate: null,
+          key: 'selection'
+        }
+      ]);
     const [ratingFilter, setRatingFilter] = useState([]);
     const [espressoBeanFilter, setEspressoBeanFilter] = useState([]);
     const [extractionDurationFilter, setExtractionDurationFilter] = useState([]);
-    const [grindSizeFilter, setGrindSizeFilter] = useState([]);
-    const [tampWeightFilter, setTampWeightFilter] = useState([]);
-    const [acidityFilter, setAcidityFilter] = useState([]);
-    const [cremaQualityFilter, setCremaQualityFilter] = useState([]);
+    const [grindSizeFilter, setGrindSizeFilter] = useState([0,30]);
+    const [tampWeightFilter, setTampWeightFilter] = useState([0,5]);
+    const [acidityFilter, setAcidityFilter] = useState([0,5]);
+    const [cremaQualityFilter, setCremaQualityFilter] = useState([0,5]);
     const [shotsToDisplay, setShotsToDisplay] = useState('single')
 
     const espressos = [
@@ -57,14 +67,6 @@ export default function HomeScreen() {
         }
     ];    
 
-    const items = [
-        {
-            name: "Espresso Beans",
-            id: 0,
-            children: [...new Set(espressos.map(item => ({ name: item.espressoBean, id: item.espressoBean })))],
-        }
-    ];
-
     return (
         <View style={styles.container}>
             <Text style={styles.header}>EspressoLab</Text>
@@ -73,15 +75,13 @@ export default function HomeScreen() {
                 animationType="fade"
                 transparent={true}
                 visible={modalVisible}
-                onRequestClose={() => {
-                    setModalVisible(!modalVisible);
-                }}
+                onRequestClose={() => setModalVisible(!modalVisible)}
             >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
                         <MultiSelector
-                        placeholder="Select Espresso Beans"
-                        data={Array.from(new Set(espressos.map(item => item.espressoBean))).map((item) => ({
+                        placeholder="Espresso Beans"
+                        data={espressos.map((item) => item.espressoBean).map((item) => ({
                             label: item,
                             value: item
                         }))}
@@ -91,7 +91,79 @@ export default function HomeScreen() {
                         selected={espressoBeanFilter}
                         style
                         />
-                        <Text style={styles.text}>Extraction Duration</Text>
+                        <View style={styles.sliderRow}>
+                            <Text style={styles.text}>Extraction Duration:</Text>
+                            <MultiSlider
+                                values={[extractionDurationFilter[0], extractionDurationFilter[1]]}
+                                sliderLength={250}
+                                onValuesChange={(values: number[]) => setExtractionDurationFilter(values)}
+                                min={0}
+                                max={60}
+                                step={1}
+                            />
+                        </View>
+                        <View style={styles.sliderRow}>
+                            <Text style={styles.text}>Grind Size:</Text>
+                            <MultiSlider
+                                values={[grindSizeFilter[0], grindSizeFilter[1]]}
+                                sliderLength={250}
+                                onValuesChange={(values: number[]) => setGrindSizeFilter(values)}
+                                min={0}
+                                max={30}
+                                step={1}
+                            />
+                        </View>
+                        <View style={styles.sliderRow}>
+                            <Text style={styles.text}>Tamp Weight:</Text>
+                            <MultiSlider
+                                values={[tampWeightFilter[0], tampWeightFilter[1]]}
+                                sliderLength={250}
+                                onValuesChange={(values: number[]) => setTampWeightFilter(values)}
+                                min={0}
+                                max={5}
+                                step={1}
+                            />
+                        </View>
+                        <View style={styles.sliderRow}>
+                            <Text style={styles.text}>Acidity:</Text>
+                            <MultiSlider
+                                values={[acidityFilter[0], acidityFilter[1]]}
+                                sliderLength={250}
+                                onValuesChange={(values: number[]) => setAcidityFilter(values)}
+                                min={0}
+                                max={5}
+                                step={1}
+                            />
+                        </View>
+                        <View style={styles.sliderRow}>
+                            <Text style={styles.text}>Crema Quality:</Text>
+                            <MultiSlider
+                                values={[cremaQualityFilter[0], cremaQualityFilter[1]]}
+                                sliderLength={250}
+                                onValuesChange={(values: number[]) => setCremaQualityFilter(values)}
+                                min={0}
+                                max={5}
+                                step={1}
+                            />
+                        </View>
+                        <View style={styles.sliderRow}>
+                            <Text style={styles.text}>Overall Rating:</Text>
+                            <MultiSlider
+                                values={[ratingFilter[0], ratingFilter[1]]}
+                                sliderLength={250}
+                                onValuesChange={(values: number[]) => setRatingFilter(values)}
+                                min={0}
+                                max={5}
+                                step={1}
+                            />
+                        </View>
+                        <Text style={styles.text}>Brew Date:</Text>
+                        <DateRange
+                            editableDateInputs={true}
+                            onChange={(item) => setDateFilter([item.selection])}
+                            moveRangeOnFirstSelection={false}
+                            ranges={dateFilter}
+                        />
                         <Button title="Apply Filters" onPress={() => setModalVisible(!modalVisible)} variant='creamBeige' style={styles.modalButton} />
                     </View>
                 </View>
@@ -157,6 +229,9 @@ export default function HomeScreen() {
             position: 'absolute',
             bottom: 60
         },
+        column: {
+            flexDirection: 'column',
+        },
         container: {
             flex: 1,
             backgroundColor: colors.lightEspresso,
@@ -190,6 +265,12 @@ export default function HomeScreen() {
         shotButtons: {
             width: 182,
             height: 55,
+        },
+        sliderRow: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginRight: 15
         },
         text: {
             fontSize: 20,
