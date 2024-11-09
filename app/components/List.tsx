@@ -33,6 +33,10 @@ export interface Espresso {
 export default function List(props: Props) {
     const {filterBy, espressos} = props;
     const [selectedEspresso, setSelectedEspresso] = useState<number | null>(null)
+
+    function onEdit() {
+        
+    }
     
     return (
         <View style={styles.container}>
@@ -51,7 +55,7 @@ export default function List(props: Props) {
                     selected={espresso.id == selectedEspresso}
                     onSelect={() => setSelectedEspresso(espresso.id)}
                     onUnselect={() => setSelectedEspresso(null)}
-                    onEdit={() => {}}>
+                    onEdit={onEdit}>
                 </ListItem>
                 ))}
             </ScrollView>

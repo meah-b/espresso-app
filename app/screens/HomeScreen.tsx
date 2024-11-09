@@ -7,9 +7,11 @@ import { Filter } from "../components/svgs/Filter";
 import MultiSelector from "../components/MultiSelector";
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import DateTimePicker from 'react-native-ui-datepicker';
+import EditModal from "../components/EditModal";
 
 export default function HomeScreen() {
-    const [modalVisible, setModalVisible] = useState(false);
+    const [filterModalVisible, setFilterModalVisible] = useState(false);
+    const [editModalVisible, setEditModalVisible] = useState(false);
     const [dateFilter, setDateFilter] = useState([]);
     const [ratingFilter, setRatingFilter] = useState([0, 5]);
     const [espressoBeanFilter, setEspressoBeanFilter] = useState([]);
@@ -19,6 +21,17 @@ export default function HomeScreen() {
     const [acidityFilter, setAcidityFilter] = useState([0,5]);
     const [cremaQualityFilter, setCremaQualityFilter] = useState([0,5]);
     const [shotFilter, setShotFilter] = useState('single')
+
+    const clearFilters = () => {
+        setEspressoBeanFilter([]);
+        setExtractionDurationFilter([0, 60]);
+        setGrindSizeFilter([0, 30]);
+        setTampWeightFilter([0, 5]);
+        setAcidityFilter([0, 5]);
+        setCremaQualityFilter([0, 5]);
+        setRatingFilter([0, 5]);
+        setDateFilter([]);
+    };
 
     const espressos = [
         {
@@ -62,12 +75,12 @@ export default function HomeScreen() {
     return (
         <View style={styles.container}>
             <Text style={styles.header}>EspressoLab</Text>
-            <TouchableOpacity style={styles.filter} onPress={() => setModalVisible(true)}><Filter/></TouchableOpacity>
+            <TouchableOpacity style={styles.filter} onPress={() => setFilterModalVisible(true)}><Filter/></TouchableOpacity>
             <Modal
                 animationType="fade"
                 transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => setModalVisible(!modalVisible)}
+                visible={filterModalVisible}
+                onRequestClose={() => setFilterModalVisible(false)}
             >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
@@ -185,21 +198,32 @@ export default function HomeScreen() {
                                 headerTextStyle={{fontFamily: 'Cochin-Bold', fontSize: 20}}
                             />
                         </ScrollView>
-                        <Button title="Apply Filters" onPress={() => setModalVisible(!modalVisible)} variant='creamBeige' style={styles.modalButton} />
+                        <View style={styles.filterRow}>
+                            <Button title="Clear" onPress={clearFilters} variant='creamBeige' style={styles.modalButton} />
+                            <Button title="Apply" onPress={() => setFilterModalVisible(false)} variant='creamBeige' style={styles.modalButton} />
+                        </View>
                     </View>
                 </View>
+            </Modal>
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={editModalVisible}
+                onRequestClose={() => setEditModalVisible(false)}
+            >
+                <EditModal/>
             </Modal>
             <View style={styles.row}>
                 <Button 
                     title="Single Shots" 
                     variant={shotFilter == 'single' ? "creamBeige" : "darkEspresso"} 
-                    onPress={() =>setShotFilter('single')} 
+                    onPress={() => setShotFilter('single')} 
                     style={styles.shotButtons}
                     icon={shotFilter == 'single' ? "brownSingleShot" : "creamSingleShot"}/>
                 <Button 
                     title="Double Shots" 
                     variant={shotFilter == 'double' ? "creamBeige" : "darkEspresso"} 
-                    onPress={() =>setShotFilter('double')} 
+                    onPress={() => setShotFilter('double')} 
                     style={styles.shotButtons}
                     icon={shotFilter == 'double' ? "brownDoubleShot" : "creamDoubleShot"}/>
             </View>
@@ -217,7 +241,13 @@ export default function HomeScreen() {
                 ]}
                 espressos={espressos}
             />
-            {!modalVisible && <Button title="New Espresso Shot" variant="creamBeige" onPress={() => {}} style={styles.button}/>}
+            {!filterModalVisible && !editModalVisible && 
+            <Button 
+                title="New Espresso Shot" 
+                variant="creamBeige" 
+                onPress={() => setEditModalVisible(true)} 
+                style={styles.button}/>
+            }
         </View>
       );
     }
@@ -264,6 +294,13 @@ export default function HomeScreen() {
             top: 155,
             right: 15,
         },
+        filterRow: {
+            alignItems: 'center',
+            flexDirection: 'row',
+            position: 'absolute',
+            top: 505,
+            gap: 8
+        },
         filterText: {
             fontSize: 20,
             fontFamily: 'Cochin-Bold',
@@ -274,13 +311,11 @@ export default function HomeScreen() {
             fontFamily: 'Cochin-Bold',
             color: colors.creamBeige,
             position: 'absolute',
-            top: 80
+            top: 70
         },
         modalButton: {
-            width: 240,
+            width: 180,
             height: 55,
-            position: 'absolute',
-            top: 534
         },
         row: {
             marginTop: 190,
@@ -293,7 +328,7 @@ export default function HomeScreen() {
             width: 370
         },
         shotButtons: {
-            width: 182,
+            width: 185,
             height: 55,
         },
         text: {

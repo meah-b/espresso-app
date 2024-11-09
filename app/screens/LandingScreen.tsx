@@ -13,7 +13,11 @@ export default function LandingScreen() {
               style={styles.backgroundImage}
             />
             <Text style={styles.text}>EspressoLab</Text>
-            <Button title="Get Started" variant="start" onPress={() => {navigation.navigate('Home' as never)}} style></Button>
+            <Button 
+                title="Get Started" 
+                variant="start" 
+                onPress={() => {navigation.navigate('Home' as never)}} 
+                style/>
         </View>
       );
     }

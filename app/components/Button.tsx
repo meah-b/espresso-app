@@ -71,7 +71,7 @@ export default function Button (props: Props) {
       backgroundColor: colors.lightEspresso,
       height: 55,
       paddingHorizontal: 90,
-      borderRadius: 50,
+      borderRadius: 5,
       marginVertical: 8,
       justifyContent: 'center',
       shadowColor: colors.black,
@@ -82,7 +82,7 @@ export default function Button (props: Props) {
     },
     standardContainer: {
       height: 55,
-      borderRadius: 50,
+      borderRadius: 5,
       marginVertical: 5,
       justifyContent: 'center',
       shadowColor: colors.black,
