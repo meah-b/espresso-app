@@ -16,7 +16,7 @@ export default function HomeScreen() {
     const [ratingFilter, setRatingFilter] = useState([0, 5]);
     const [espressoBeanFilter, setEspressoBeanFilter] = useState([]);
     const [extractionDurationFilter, setExtractionDurationFilter] = useState([0,60]);
-    const [grindSizeFilter, setGrindSizeFilter] = useState([0,30]);
+    const [grindSizeFilter, setGrindSizeFilter] = useState([0,60]);
     const [tampWeightFilter, setTampWeightFilter] = useState([0,5]);
     const [acidityFilter, setAcidityFilter] = useState([0,5]);
     const [cremaQualityFilter, setCremaQualityFilter] = useState([0,5]);
@@ -25,7 +25,7 @@ export default function HomeScreen() {
     const clearFilters = () => {
         setEspressoBeanFilter([]);
         setExtractionDurationFilter([0, 60]);
-        setGrindSizeFilter([0, 30]);
+        setGrindSizeFilter([0, 60]);
         setTampWeightFilter([0, 5]);
         setAcidityFilter([0, 5]);
         setCremaQualityFilter([0, 5]);
@@ -80,7 +80,6 @@ export default function HomeScreen() {
                 animationType="fade"
                 transparent={true}
                 visible={filterModalVisible}
-                onRequestClose={() => setFilterModalVisible(false)}
             >
                 <View style={styles.centeredView}>
                     <View style={styles.modalView}>
@@ -119,7 +118,7 @@ export default function HomeScreen() {
                                 sliderLength={300}
                                 onValuesChange={(values: number[]) => setGrindSizeFilter(values)}
                                 min={0}
-                                max={30}
+                                max={60}
                                 step={1}
                                 snapped
                                 enableLabel
@@ -209,9 +208,8 @@ export default function HomeScreen() {
                 animationType="fade"
                 transparent={true}
                 visible={editModalVisible}
-                onRequestClose={() => setEditModalVisible(false)}
             >
-                <EditModal/>
+                <EditModal closeModal={() => setEditModalVisible(false)}/>
             </Modal>
             <View style={styles.row}>
                 <Button 

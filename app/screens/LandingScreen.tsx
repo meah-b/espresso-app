@@ -16,7 +16,7 @@ export default function LandingScreen() {
             <Button 
                 title="Get Started" 
                 variant="start" 
-                onPress={() => {navigation.navigate('Home' as never)}} 
+                onPress={() => navigation.navigate('Home' as never)} 
                 style/>
         </View>
       );
